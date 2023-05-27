@@ -57,7 +57,7 @@ local function bankMenu()
                 },
                 {
                     title = 'Tilisiirto',
-                    icon = 'money-check',
+                    icon = 'money-bill-transfer',
                     description = 'Tästä voit siirtää toiselle rahaa',
                     onSelect = function()
                         inputDialog(3)
@@ -79,7 +79,7 @@ end
 local options = {
     {
         name = 'atm',
-        icon = 'fa-solid fa-road',
+        icon = 'fa-solid fa-piggy-bank',
         label = 'Pankki',
         canInteract = function(entity, distance, coords, name, bone)
             return not IsEntityDead(entity)
@@ -91,7 +91,7 @@ local options = {
 }
 
 
-local models = { `prop_atm_01`, `prop_atm_02` }
+local models = { `prop_atm_01`, `prop_atm_02`, `prop_atm_03`, `prop_fleeca_atm` }
 local optionsNames = { 'atm' }
 exports.ox_target:addModel(models, options)
 
@@ -125,6 +125,7 @@ for k, v in pairs(bankCoords) do
     })
     bankBlips(v)
 end
+
 
 
 
