@@ -1,14 +1,28 @@
+local bankCoords = {
+    [1] = vector3(152.37715, -1035.063, 29.338615),
+    [2] = vector3(313.68148, -279.001, 54.170772),
+    [3] = vector3(1212.980, 330.841, 37.787),
+    [4] = vector3(2962.582, 482.627, 15.703),
+    [5] = vector3(112.202, 6469.295, 31.626),
+    [6] = vector3(351.534, -49.529, 49.042),
+    [7] = vector3(241.727, 220.706, 106.286),
+    [8] = vector3(1175.06, 2706.64, 38.0940),
+}
+
+local blip = false
+local bank = false
+
 
 local function inputDialog(type)
     if type ~= nil then
         if type == 1 then
             local input = lib.inputDialog('Nosto', {
-                {type = 'number', label = 'Nosto', icon = 'money', min = 1, required = true}
+                {type = 'number', label = 'Nosto', icon = 'money-bill-transfer', min = 1, required = true}
             })
             TriggerServerEvent('esx_aj_banking:sv:nosto', input[1])
         elseif type == 2 then
             local input1 = lib.inputDialog('Talletus', {
-                {type = 'number', label = 'talletus', icon = 'money', min = 1, required = true}
+                {type = 'number', label = 'talletus', icon = 'money-bill-transfer', min = 1, required = true}
             })
             TriggerServerEvent('esx_aj_banking:sv:talletus', input1[1])
         elseif type == 3 then 
@@ -67,7 +81,7 @@ end
 
 local options = {
     {
-        name = 'pankki',
+        name = 'atm',
         icon = 'fa-solid fa-road',
         label = 'Pankki',
         canInteract = function(entity, distance, coords, name, bone)
@@ -81,11 +95,49 @@ local options = {
 
 
 local models = { `prop_atm_01`, `prop_atm_02` }
-local optionsNames = { 'pankki' }
+local optionsNames = { 'atm' }
 
 exports.ox_target:addModel(models, options)
 
 
-
+CreateThread(function()
+    repeat Wait(2000) until ESX.IsPlayerLoaded()
+    local blipcount = 0
+    while true do 
+        for k,v in pairs(bankCoords) do 
+            if not bank then
+                exports.ox_target:addSphereZone({
+                    coords = vector3(v.x, v.y, v.z),
+                    radius = 1.5,
+                    options = {
+                        {
+                            name = 'pankki',
+                            icon = 'fa-solid fa-circle',
+                            label = 'Pankki',
+                            debug = true ,
+                            drawSprite = true,
+                            onSelect = function()
+                                bankMenu()
+                            end
+                        }
+                    }
+                })
+                local blips = AddBlipForCoord(v.x, v.y, v.z)
+                SetBlipSprite(blips, 277)
+                SetBlipScale(blips, 1.0)
+                SetBlipColour(blips, 5)
+                SetBlipAsShortRange(blips, true)
+                BeginTextCommandSetBlipName("STRING")
+                AddTextComponentString('Pankki')
+                EndTextCommandSetBlipName(blips)
+                blipcount = blipcount + 1
+                if blipcount == 8 then 
+                    bank = true
+                end
+            end
+        end
+        Wait(2000)
+    end 
+end)
 
 
