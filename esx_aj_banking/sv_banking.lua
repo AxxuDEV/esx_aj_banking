@@ -44,7 +44,6 @@ RegisterNetEvent('esx_aj_banking:sv:siirto', function(id, amount)
     local player = ESX.GetPlayerFromId(source)
     local receiver = ESX.GetPlayerFromId(id)
     local balance = player.getAccount('bank').money
-    print(balance)
     if receiver ~= nil then
         if player ~= nil then
             if player == receiver then
