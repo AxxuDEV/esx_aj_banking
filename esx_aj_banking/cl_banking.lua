@@ -9,9 +9,6 @@ local bankCoords = {
     [8] = vector3(1175.06, 2706.64, 38.0940),
 }
 
-local blip = false
-local bank = false
-
 
 local function inputDialog(type)
     if type ~= nil then
@@ -96,48 +93,38 @@ local options = {
 
 local models = { `prop_atm_01`, `prop_atm_02` }
 local optionsNames = { 'atm' }
-
 exports.ox_target:addModel(models, options)
 
+local function bankBlips(v)
+    local blips = AddBlipForCoord(v.x, v.y, v.z)
+    SetBlipSprite(blips, 277)
+    SetBlipScale(blips, 1.0)
+    SetBlipColour(blips, 5)
+    SetBlipAsShortRange(blips, true)
+    BeginTextCommandSetBlipName("STRING")
+    AddTextComponentString('Pankki')
+    EndTextCommandSetBlipName(blips)
+end
 
-CreateThread(function()
-    repeat Wait(2000) until ESX.IsPlayerLoaded()
-    local blipcount = 0
-    while true do 
-        for k,v in pairs(bankCoords) do 
-            if not bank then
-                exports.ox_target:addSphereZone({
-                    coords = vector3(v.x, v.y, v.z),
-                    radius = 1.5,
-                    options = {
-                        {
-                            name = 'pankki',
-                            icon = 'fa-solid fa-circle',
-                            label = 'Pankki',
-                            debug = true ,
-                            drawSprite = true,
-                            onSelect = function()
-                                bankMenu()
-                            end
-                        }
-                    }
-                })
-                local blips = AddBlipForCoord(v.x, v.y, v.z)
-                SetBlipSprite(blips, 277)
-                SetBlipScale(blips, 1.0)
-                SetBlipColour(blips, 5)
-                SetBlipAsShortRange(blips, true)
-                BeginTextCommandSetBlipName("STRING")
-                AddTextComponentString('Pankki')
-                EndTextCommandSetBlipName(blips)
-                blipcount = blipcount + 1
-                if blipcount == 8 then 
-                    bank = true
+for k, v in pairs(bankCoords) do 
+    exports.ox_target:addSphereZone({
+        coords = vector3(v.x, v.y, v.z),
+        radius = 2,         
+        options = {
+            {
+                name = 'pankki',
+                icon = 'fa-solid fa-circle',
+                label = 'Pankki',
+                debug = true ,
+                drawSprite = true,
+                onSelect = function()
+                    bankMenu()
                 end
-            end
-        end
-        Wait(2000)
-    end 
-end)
+            }
+        }
+    })
+    bankBlips(v)
+end
+
 
 
