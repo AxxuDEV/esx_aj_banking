@@ -44,9 +44,9 @@ RegisterNetEvent('esx_aj_banking:sv:siirto', function(id, amount)
     local player = ESX.GetPlayerFromId(source)
     local receiver = ESX.GetPlayerFromId(id)
     local balance = player.getAccount('bank').money
-    if receiver ~= nil then
-        if player ~= nil then
-            if player == receiver then
+    if player then
+        if receiver ~= nil then 
+            if tonumber(source) ~= tonumber(id) then
                 if balance ~= nil then 
                     player.removeAccountMoney('bank', amount)
                     receiver.addAccountMoney('bank', amount)
@@ -58,11 +58,12 @@ RegisterNetEvent('esx_aj_banking:sv:siirto', function(id, amount)
                         description = 'Siirsit henkilölle ' ..receiver.getName()..' summan : '..amount.. '$',
                         type = 'success',
                     })
-                else 
-                    lib.notify(source, {
-                        description = 'Sinulla ei ole tarpeeksi rahaa',
-                        type = 'error',
-                    })
+                    else 
+                        lib.notify(source, {
+                            description = 'Sinulla ei ole tarpeeksi rahaa',
+                            type = 'error',
+                        })
+                    end
                 end
             else
                 lib.notify(source, {
@@ -70,11 +71,12 @@ RegisterNetEvent('esx_aj_banking:sv:siirto', function(id, amount)
                     type = 'error',
                 })
             end
+        else
+            lib.notify(source, {
+                description = 'Ei henkilöä tuolla id:llä',
+                type = 'error',
+            })
         end
-    else
-        lib.notify(source, {
-            description = 'Ei henkilöä tuolla id:llä',
-            type = 'error',
-        })
     end
 end)
+
