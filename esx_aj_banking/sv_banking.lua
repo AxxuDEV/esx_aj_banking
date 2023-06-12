@@ -58,12 +58,11 @@ RegisterNetEvent('esx_aj_banking:sv:siirto', function(id, amount)
                         description = 'Siirsit henkilölle ' ..receiver.getName()..' summan : '..amount.. '$',
                         type = 'success',
                     })
-                    else 
-                        lib.notify(source, {
-                            description = 'Sinulla ei ole tarpeeksi rahaa',
-                            type = 'error',
-                        })
-                    end
+               else 
+                    lib.notify(source, {
+                        description = 'Sinulla ei ole tarpeeksi rahaa',
+                        type = 'error',
+                   }) 
                 end
             else
                 lib.notify(source, {
