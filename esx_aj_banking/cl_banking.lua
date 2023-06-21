@@ -11,68 +11,66 @@ local bankCoords = {
 
 
 local function inputDialog(type)
-    if type ~= nil then
-        if type == 1 then
-            local input = lib.inputDialog('Nosto', {
-                {type = 'number', label = 'Nosto', icon = 'money-bill-transfer', min = 1, required = true}
-            })
-            TriggerServerEvent('esx_aj_banking:sv:nosto', input[1])
-        elseif type == 2 then
-            local input1 = lib.inputDialog('Talletus', {
-                {type = 'number', label = 'talletus', icon = 'money-bill-transfer', min = 1, required = true}
-            })
-            TriggerServerEvent('esx_aj_banking:sv:talletus', input1[1])
-        elseif type == 3 then 
-            local input2 = lib.inputDialog('Siirto', {
-                {type = 'input', label = 'Tilisiirto', description = 'Kirjoita henkilön ID kenelle haluat siirtää rahaa', min = '1', required = true},
-                {type = 'number', label = 'Tilisiirto', icon = 'money-bill-transfer', min = 1, required = true}
-            })
-            TriggerServerEvent('esx_aj_banking:sv:siirto', input2[1], input2[2])
-        end
+    if type == nil then 
+        return
+    end
+    if type == 1 then
+        local input = lib.inputDialog('Nosto', {
+            {type = 'number', label = 'Nosto', icon = 'money-bill-transfer', min = 1, required = true}
+        })
+        TriggerServerEvent('esx_aj_banking:sv:nosto', input[1])
+    elseif type == 2 then
+        local input1 = lib.inputDialog('Talletus', {
+            {type = 'number', label = 'talletus', icon = 'money-bill-transfer', min = 1, required = true}
+        })
+        TriggerServerEvent('esx_aj_banking:sv:talletus', input1[1])
+    elseif type == 3 then 
+        local input2 = lib.inputDialog('Siirto', {
+            {type = 'input', label = 'Tilisiirto', description = 'Kirjoita henkilön ID kenelle haluat siirtää rahaa', min = '1', required = true},
+            {type = 'number', label = 'Tilisiirto', icon = 'money-bill-transfer', min = 1, required = true}
+        })
+        TriggerServerEvent('esx_aj_banking:sv:siirto', input2[1], input2[2])
     end
 end
-  
-
-local function bankMenu()
-    if not registered then
-        lib.registerContext({
+CreateThread(function()
+ lib.registerContext({
             id = 'bankMenu',
-            title = 'Pankki',
+            title = 'Bank',
             options = {
                 {
-                    title = 'Nosto',
+                    title = 'Withdraw',
                     icon = 'money-check',
-                    description = 'Tästä voit nostaa rahaa',
+                    description = 'Withdraw money from your bank account',
                     onSelect = function()
                         inputDialog(1)
                     end
                 },
                 {
-                    title = 'Talletus',
+                    title = 'Deposit',
                     icon = 'money-check',
-                    description = 'Tästä voit tallettaa rahaa',
+                    description = 'Deposit money to your bank account',
                     onSelect = function()
                         inputDialog(2)
                     end
                 },
                 {
-                    title = 'Tilisiirto',
+                    title = 'Transfer',
                     icon = 'money-bill-transfer',
-                    description = 'Tästä voit siirtää toiselle rahaa',
+                    description = 'Transfer money to other people',
                     onSelect = function()
                         inputDialog(3)
                     end
                 },
                 {
-                    title = 'Saldosi',
+                    title = 'Balance',
                     icon = 'money-check',
-                    description = 'Tästä voit katsoa sinun saldosi',
+                    description = 'Check your balance',
                     serverEvent = 'esx_aj_banking:sv:saldo'
                 }
             }
         })
-        registered = true
-    end
+end)
+local function showBankMenu()
     lib.showContext('bankMenu')
 end
 
@@ -80,10 +78,7 @@ local options = {
     {
         name = 'atm',
         icon = 'fa-solid fa-piggy-bank',
-        label = 'Pankki',
-        canInteract = function(entity, distance, coords, name, bone)
-            return not IsEntityDead(entity)
-        end,
+        label = 'Bank',
         onSelect = function()
             bankMenu()
         end
@@ -102,7 +97,7 @@ local function bankBlips(v)
     SetBlipColour(blips, 5)
     SetBlipAsShortRange(blips, true)
     BeginTextCommandSetBlipName("STRING")
-    AddTextComponentString('Pankki')
+    AddTextComponentString('Bank')
     EndTextCommandSetBlipName(blips)
 end
 
@@ -112,9 +107,9 @@ for k, v in pairs(bankCoords) do
         radius = 2,         
         options = {
             {
-                name = 'pankki',
+                name = 'banks',
                 icon = 'fa-solid fa-circle',
-                label = 'Pankki',
+                label = 'Bank',
                 debug = true ,
                 drawSprite = true,
                 onSelect = function()
