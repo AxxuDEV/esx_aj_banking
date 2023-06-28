@@ -63,7 +63,7 @@ RegisterNetEvent('esx_aj_banking:sv:siirto', function(id, amount)
         return
     end
 
-    if balance == nil then 
+    if not balance then 
         return
     end
 
