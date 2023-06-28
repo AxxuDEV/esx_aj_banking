@@ -11,7 +11,7 @@ local bankCoords = {
 
 
 local function inputDialog(type)
-    if type == nil then 
+    if not type then 
         return
     end
     if type == 1 then
