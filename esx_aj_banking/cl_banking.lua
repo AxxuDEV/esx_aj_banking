@@ -113,7 +113,7 @@ for k, v in pairs(bankCoords) do
                 debug = true ,
                 drawSprite = true,
                 onSelect = function()
-                    bankMenu()
+                    showBankMenu()
                 end
             }
         }
