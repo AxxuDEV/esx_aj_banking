@@ -33,44 +33,44 @@ local function inputDialog(type)
     end
 end
 CreateThread(function()
- lib.registerContext({
-            id = 'bankMenu',
-            title = 'Bank',
-            options = {
-                {
-                    title = 'Withdraw',
-                    icon = 'money-check',
-                    description = 'Withdraw money from your bank account',
-                    onSelect = function()
-                        inputDialog(1)
-                    end
-                },
-                {
-                    title = 'Deposit',
-                    icon = 'money-check',
-                    description = 'Deposit money to your bank account',
-                    onSelect = function()
-                        inputDialog(2)
-                    end
-                },
-                {
-                    title = 'Transfer',
-                    icon = 'money-bill-transfer',
-                    description = 'Transfer money to other people',
-                    onSelect = function()
-                        inputDialog(3)
-                    end
-                },
-                {
-                    title = 'Balance',
-                    icon = 'money-check',
-                    description = 'Check your balance',
-                    serverEvent = 'esx_aj_banking:sv:saldo'
-                }
+    lib.registerContext({
+        id = 'bankMenu',
+        title = 'Bank',
+        options = {
+            {
+                title = 'Withdraw',
+                icon = 'money-check',
+                description = 'Withdraw money from your bank account',
+                onSelect = function()
+                    inputDialog(1)
+                end
+            },
+            {
+                title = 'Deposit',
+                icon = 'money-check',
+                description = 'Deposit money to your bank account',
+                onSelect = function()
+                    inputDialog(2)
+                end
+            },
+            {
+                title = 'Transfer',
+                icon = 'money-bill-transfer',
+                description = 'Transfer money to other people',
+                onSelect = function()
+                   inputDialog(3)
+                end
+            },
+            {
+                title = 'Balance',
+                icon = 'money-check',
+                description = 'Check your balance',
+                serverEvent = 'esx_aj_banking:sv:saldo'
             }
-        })
+        }
+    })
 end)
-local function showBankMenu()
+local function bankMenu()
     lib.showContext('bankMenu')
 end
 
@@ -120,7 +120,5 @@ for k, v in pairs(bankCoords) do
     })
     bankBlips(v)
 end
-
-
 
 
